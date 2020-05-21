@@ -6,9 +6,13 @@
         {
             "type": "shell",
             "label": "g++ build active file",
-            "command": "g++ main.cpp sserver/sserver.cpp -o main -I${workspaceFolder}/inc -I${workspaceFolder}/sserver -pthread",
+            // "command": "g++ main.cpp -o main -I${workspaceFolder}/inc",
+            "command": "g++",
             "args": [
-                
+                "main.cpp",
+                "-o",
+                "main",
+                "-I${workspaceFolder}/inc"
             ],
             "options": {
                 "cwd": "${workspaceFolder}",
