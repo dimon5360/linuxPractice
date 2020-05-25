@@ -6,9 +6,8 @@
             "compilerPath": "/usr/bin/g++",
             "intelliSenseMode": "gcc-x64",
             "includePath": [
-                "${workspaceFolder}/inc/", 
-                "${workspaceFolder}/sserver/",
-                "/usr/include"],
+                "${workspaceFolder}/inc/",
+                "/usr/local/Cellar/boost/1.72.0_2/include"],
             "compilerArgs": [],
             "cStandard": "c11",
             "cppStandard": "c++17"

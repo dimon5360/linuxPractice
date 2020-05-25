@@ -6,13 +6,18 @@
         {
             "type": "shell",
             "label": "g++ build active file",
-            // "command": "g++ main.cpp -o main -I${workspaceFolder}/inc",
             "command": "g++",
-            "args": [
+            "args": [ 
                 "main.cpp",
+                "-lboost_system", 
+                "-lboost_thread-mt", // mac OS
+                "-lboost_chrono-mt", // mac OS
+                // "-lboost_thread", // linux
+                // "-lboost_chrono", // linux
                 "-o",
                 "main",
-                "-I${workspaceFolder}/inc"
+                "-I${workspaceFolder}/inc",
+                "-I/usr/local/Cellar/boost/1.72.0_2/include"
             ],
             "options": {
                 "cwd": "${workspaceFolder}",
@@ -20,7 +25,19 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "group": "build"
+            "group": "build",
+        },
+        {
+            "type": "shell",
+            "label": "g++ run active file",
+            "command": "${workspaceFolder}/main",
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
         }
     ]
 }
