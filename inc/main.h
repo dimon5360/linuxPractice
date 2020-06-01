@@ -7,7 +7,7 @@
 #include <boost/format.hpp>
 #include <boost/chrono.hpp>
 
-/* application version */
+/* application version v.0.0.3 from 01.06.2020 */
 #define MAJOR   0
 #define MINOR   0
 #define BUILD   3
