@@ -73,11 +73,15 @@
         "shared_mutex": "cpp",
         "typeindex": "cpp",
         "valarray": "cpp",
+<<<<<<< HEAD
         "__bit_reference": "cpp",
         "__functional_03": "cpp",
         "__mutex_base": "cpp",
         "__node_handle": "cpp",
         "ios": "cpp",
         "variant": "cpp"
+=======
+        "*.ipp": "cpp"
+>>>>>>> b40a05ca2e6f0867d916f596bed38bec49006d32
     }
 }
