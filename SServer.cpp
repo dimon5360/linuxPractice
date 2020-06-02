@@ -35,6 +35,9 @@ SServer::SServer() {
 #endif /* TCP_SERVER_CALLED_FUNCTION */
 
     std::cout << "Object of SServer class created." << std::endl;
+
+    // todo: remove return ****************************************************************
+    return;
     
     io_service service;
     ip::tcp::endpoint ep(ip::address::from_string("0.0.0.0"), 40400);
@@ -55,6 +58,18 @@ SServer::SServer() {
     }
 }
 
+/**
+ * @brief SServer class destructor
+ */
+SServer::~SServer() {
+#if TCP_SERVER_CALLED_FUNCTION
+    std::cout << __func__ << "()" << std::endl;
+#endif /* TCP_SERVER_CALLED_FUNCTION */
+    
+    std::cout << "Object of SServer class removed." << std::endl;
+    
+}
+
 static void client_session(socket_ptr sock) {
     char data[1024];
     
@@ -72,16 +87,4 @@ static void client_session(socket_ptr sock) {
         }
         boost::this_thread::sleep_for(boost::chrono::milliseconds(THREAD_TIMEOUT));
     }
-}
-
-/**
- * @brief SServer class destructor
- */
-SServer::~SServer() {
-#if TCP_SERVER_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* TCP_SERVER_CALLED_FUNCTION */
-    
-    std::cout << "Object of SServer class removed." << std::endl;
-    
 }

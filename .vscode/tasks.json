@@ -12,6 +12,7 @@
                 "UnitTest.cpp",
                 "SServer.cpp",
                 "SService.cpp",
+                "DDatabase.cpp",
                 "-O3",
                 "-lboost_system", 
                 // "-lboost_thread-mt", // mac OS
