@@ -19,6 +19,7 @@
                 // "-lboost_chrono-mt", // mac OS
                 "-lboost_thread", // linux
                 "-lboost_chrono", // linux
+                "-lpthread",
                 "-o",
                 "main",
                 "-I${workspaceFolder}/inc",

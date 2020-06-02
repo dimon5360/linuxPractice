@@ -10,13 +10,22 @@
 
 #pragma once
 
+/* local headers */
 #include "SService.hpp"
 
+/* std C++ headers */
+#include <thread>
+
 class DDatabase: SService {
+private:
+    std::thread mainDatabasethread;
+
 
 public:
     /* data base class constructor */
     DDatabase();
     /* data base class destructor */
     ~DDatabase();
+    /* data base main handler */
+    void handle();
 };

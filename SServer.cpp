@@ -35,9 +35,6 @@ SServer::SServer() {
 #endif /* TCP_SERVER_CALLED_FUNCTION */
 
     std::cout << "Object of SServer class created." << std::endl;
-
-    // todo: remove return ****************************************************************
-    return;
     
     io_service service;
     ip::tcp::endpoint ep(ip::address::from_string("0.0.0.0"), 40400);
@@ -54,7 +51,7 @@ SServer::SServer() {
         boost::thread(boost::bind(client_session, sock));
         std::cout << "Client accepted\n";
         
-        boost::this_thread::sleep_for(boost::chrono::milliseconds(THREAD_TIMEOUT));
+        // boost::this_thread::sleep_for(boost::chrono::milliseconds(THREAD_TIMEOUT));
     }
 }
 
@@ -71,20 +68,22 @@ SServer::~SServer() {
 }
 
 static void client_session(socket_ptr sock) {
+    std::cout << __func__ << "()" << std::endl;
     char data[1024];
     
     while(true) {
-        try {
-            size_t len = sock->read_some(buffer(data));
-            if (len > 0) {
-                std::cout << std::string(data) << std::endl;
-                write(*sock, buffer("ok", 2));
-            }
-        }
-        catch (const std::exception& ex) {
-            std::cout << ex.what() << std::endl;
-            break;
-        }
+        // TODO: realize async readingc
+        // try {
+        //     size_t len = sock->read_some(buffer(data));
+        //     if (len > 0) {
+        //         std::cout << std::string(data) << std::endl;
+        //         write(*sock, buffer("ok", 2));
+        //     }
+        // }
+        // catch (const std::exception& ex) {
+        //     std::cout << ex.what() << std::endl;
+        //     break;
+        // }
         boost::this_thread::sleep_for(boost::chrono::milliseconds(THREAD_TIMEOUT));
     }
 }
