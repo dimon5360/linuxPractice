@@ -12,4 +12,5 @@
 
 
 /* logger items ------------------------------------------------------------ */
-#define TCP_SERVER_CALLED_FUNCTION      1
+#define TCP_SERVER_CALLED_FUNCTION      0
+#define DATA_BASE_CALLED_FUNCTION       0
