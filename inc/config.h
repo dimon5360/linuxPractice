@@ -11,6 +11,9 @@
 #pragma once
 
 
+/* unit testing ------------------------------------------------------------ */
+#define UNIT_TESTS_ENABLE               1
+
 /* logger items ------------------------------------------------------------ */
 #define TCP_SERVER_CALLED_FUNCTION      0
 #define DATA_BASE_CALLED_FUNCTION       0

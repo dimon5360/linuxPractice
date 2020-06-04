@@ -9,6 +9,7 @@
  */
 
 /* local headers */
+#include "config.h"
 #include "main.h"
 #include "UnitTest.hpp"
 
@@ -27,10 +28,11 @@ static void PrintAppInfo(void);
 int main() {
 
     PrintAppInfo();
+
+#if UNIT_TESTS_ENABLE
+    StartUnitTesting();
+#endif /* UNIT_TESTS_ENABLE */
     
-    int res = 0;
-    res = StartUnitTesting();
-    std::cout << "Unit testing result is " << res << std::endl;
 
     /* TODO: need to realize server class */
     return 0;

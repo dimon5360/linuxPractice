@@ -29,6 +29,12 @@ DDatabase::DDatabase() {
 
     std::cout << "Object of DDatabase class created." << std::endl;
 
+
+
+    /* TODO: code below commented to test async realization 
+     of data base class instead multithread */
+
+    // thread for handling io woth db
     boost::thread(boost::bind(&DDatabase::handle, this));
 }
 
