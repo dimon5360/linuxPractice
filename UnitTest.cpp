@@ -64,11 +64,11 @@ static void AsyncOutData(void) {
  */
 void UUnitTest::TestAsyncConsoleOutput(void) {
 
-    boost::asio::io_context io;
+    // boost::asio::io_context io;
 
-    boost::asio::steady_timer t(io, boost::asio::chrono::seconds(5));
+    // boost::asio::steady_timer t(io, boost::asio::chrono::seconds(5));
 
-    t.wait();
+    // t.wait();
 
     std::cout << "Test finished." << std::endl;
 
