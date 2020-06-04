@@ -45,5 +45,4 @@ static void PrintAppInfo(void) {
 
     std::cout << "Application started." << std::endl;
     std::cout << "===================================\n" << std::endl;
-
 }
