@@ -8,6 +8,8 @@
 #include <boost/format.hpp>
 #include <boost/chrono.hpp>
 #include <boost/format.hpp>
+// #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/bind/bind.hpp>
 
 /* application version v.0.0.5 from 03.06.2020 */
 #define MAJOR           0
