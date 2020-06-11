@@ -43,7 +43,7 @@ public:
     void PrintUnitTestErrorCode(void);
 
     /* unit tests ---------------------------------------------------------- */
-    void TestAsyncConsoleOutput(void);
+    void TestAsyncTcpServerInput(void);
 };
 
 extern void StartUnitTesting(void);

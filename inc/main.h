@@ -9,10 +9,10 @@
 #include <boost/chrono.hpp>
 #include <boost/format.hpp>
 
-/* application version v.0.0.5 from 03.06.2020 */
+/* application version v.0.0.6 from 12.06.2020 */
 #define MAJOR           0
 #define MINOR           0
-#define BUILD           5
+#define BUILD           6
 
 /* deafult thread timeout */
 #define THREAD_TIMEOUT  5        // 5 ms

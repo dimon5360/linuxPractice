@@ -42,7 +42,7 @@ void StartUnitTesting(void) {
     std::shared_ptr<UUnitTest> unittest = std::make_shared<UUnitTest>();
 
     // unit test for async print data to console
-    unittest->TestAsyncConsoleOutput();
+    unittest->TestAsyncTcpServerInput();
     if((errCode = unittest->GetUnitTestResult()) != ERR_OK) {
         unittest->PrintUnitTestErrorCode();            
         return;
@@ -53,16 +53,12 @@ void StartUnitTesting(void) {
 
 /* unit tests -------------------------------------------------------------- */
 /**
- * @brief Static function which muse be called for async print data in console
+ * @brief Unit test of asynchronous input data in ther tcp server
  */
-static void AsyncOutData(void) {
+void UUnitTest::TestAsyncTcpServerInput(void) {
 
-}
-
-/**
- * @brief Unit test of asynchronous output data to console
- */
-void UUnitTest::TestAsyncConsoleOutput(void) {
+    std::shared_ptr<SServer> serv = std::make_shared<SServer>();
+    // acceptor acc;
 
     // boost::asio::io_context io;
 
