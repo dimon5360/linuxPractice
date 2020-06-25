@@ -36,6 +36,27 @@ uint32_t UUnitTest::GetUnitTestResult(void) {
     return unitTestResult;
 }
 
+struct BaseClass {
+public:
+    BaseClass() {
+        std::cout << "BaseClass()" << std::endl;
+    }
+    ~BaseClass() {
+        std::cout << "~BaseClass()" << std::endl;
+    }
+};
+
+struct DerivedClass: public BaseClass {
+public:
+    DerivedClass() {
+        std::cout << "DerivedClass()" << std::endl;
+    }
+
+    ~DerivedClass() {
+        std::cout << "~DerivedClass()" << std::endl;
+    }
+};
+
 /* start of unit testing  -------------------------------------------------- */
 void StartUnitTesting(void) {
     uint32_t errCode = ERR_OK;
@@ -48,10 +69,39 @@ void StartUnitTesting(void) {
         return;
     }
 
+    // unit test for basic class inheritance
+    unittest->TestInheritBaseClass();
+    if((errCode = unittest->GetUnitTestResult()) != ERR_OK) {
+        unittest->PrintUnitTestErrorCode();            
+        return;
+    }
+    
+
     std::cout << "Unit testing result succed." << std::endl;
 }
 
 /* unit tests -------------------------------------------------------------- */
+/**
+ * @brief Unit test of inrheritance from base class
+ */
+void UUnitTest::TestInheritBaseClass(void) {
+    
+    using namespace std;
+
+    cout << "Smart (shared) pointer to DerivedClass object A:" << endl;
+    shared_ptr<DerivedClass> A = make_shared<DerivedClass>();
+    cout << endl;
+    
+    cout << "Simple pointer to DerivedClass object B:" << endl;
+    DerivedClass * B = new DerivedClass();
+    delete B;
+    cout << endl;
+
+    cout << "Test finished." << endl;
+
+    unitTestResult = ERR_OK;
+}
+
 /**
  * @brief Static function which must be called for async print data in console
  */
@@ -180,4 +230,6 @@ void UUnitTest::TestAsyncConsoleOutput(void) {
 
     unitTestResult = ERR_OK;
 }
+
+
 
