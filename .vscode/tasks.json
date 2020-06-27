@@ -15,10 +15,8 @@
                 "DDatabase.cpp",
                 "-O3",
                 "-lboost_system", 
-                // "-lboost_thread-mt", // mac OS
-                // "-lboost_chrono-mt", // mac OS
-                "-lboost_thread", // linux
-                "-lboost_chrono", // linux
+                "-lboost_thread-mt",
+                "-lboost_chrono-mt",
                 "-lpthread",
                 "-o",
                 "main",
