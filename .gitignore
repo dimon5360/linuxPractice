@@ -1,0 +1,6 @@
+# ignore .vscode folder
+.vscode/
+# ignore builded file 'main'
+main
+# ignore makefile
+makefile

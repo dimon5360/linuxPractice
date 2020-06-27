@@ -20,7 +20,6 @@ class DDatabase: SService {
 private:
     std::thread mainDatabasethread;
 
-
 public:
     /* data base class constructor */
     DDatabase();
