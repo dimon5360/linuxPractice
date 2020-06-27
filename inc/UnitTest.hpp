@@ -43,7 +43,9 @@ public:
     void PrintUnitTestErrorCode(void);
 
     /* unit tests ---------------------------------------------------------- */
-    void TestAsyncTcpServerInput(void);
+    void TestAsyncConsoleOutput(void);
+    void TestInheritBaseClass(void);
+    void TestBinarySearchTree(void);
 };
 
 extern void StartUnitTesting(void);

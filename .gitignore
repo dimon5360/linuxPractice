@@ -1,4 +1,6 @@
-# ignoe .vscode folder, it contains *.json files of settings vs code
+# ignore .vscode folder
 .vscode/
-# builded file of application
+# ignore builded file 'main'
 main
+# ignore makefile
+makefile
