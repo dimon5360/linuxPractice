@@ -2,6 +2,7 @@
 .vscode/
 # ignore builded file 'main'
 main
+main.o
 # ignore makefile
 makefile
 # ignore docs folder
