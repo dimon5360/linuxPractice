@@ -30,7 +30,7 @@ int main() {
     PrintAppInfo();
 
 #if UNIT_TESTS_ENABLE
-    StartUnitTesting();
+    std::shared_ptr<UUnitTest> u = std::make_shared<UUnitTest>();
 #endif /* UNIT_TESTS_ENABLE */
     
 

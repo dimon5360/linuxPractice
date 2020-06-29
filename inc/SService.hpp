@@ -16,12 +16,6 @@
 
 class SService
 {
-private:
-    /* Queue to keep input data */
-    std::queue<std::string> inServiceQueue;
-    /* Queue to keep output data */
-    std::queue<std::string> outServiceQueue;
-
 public:
     SService() {
         std::cout << "Constructing the service." << std::endl;

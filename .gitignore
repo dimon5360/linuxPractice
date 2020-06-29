@@ -4,3 +4,5 @@
 main
 # ignore makefile
 makefile
+# ignore docs folder
+__docs/

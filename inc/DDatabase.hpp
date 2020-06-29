@@ -1,6 +1,6 @@
 /*********************
- * @file SService.hpp
- * @brief Parent class header for other classes based on it.
+ * @file DDatabase.hpp
+ * @brief Derived from SService class for data base exchange.
  * 
  * @author kalmykov Dmitry
  * 

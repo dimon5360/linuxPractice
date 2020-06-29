@@ -14,8 +14,9 @@
 #include <iostream>
 
 /* error codes for unit tests ---------------------------------------------- */
-enum err_type_ut {
+enum class err_type_ut {
     ERR_OK = 0,
+    ERR_QUEUE_EXCHANGE_FAILED = 1,
 
     ERR_ALL_CODES_MOUNT
 };
@@ -23,29 +24,22 @@ enum err_type_ut {
 /* unit test class --------------------------------------------------------- */
 class UUnitTest {
 private: 
-    uint32_t unitTestResult;
+    err_type_ut unitTestResult;
 
 public:
     /* unit test class constructor */
-    UUnitTest() {
-        std::cout << "Unit test class object created." << std::endl;
-        unitTestResult = ERR_OK;
-    }  
+    UUnitTest();
     /* unit test class destructor */ 
     ~UUnitTest() {
         std::cout << "Unit test class object removed." << std::endl;
     }
 
     /* unit test utils ----------------------------------------------------- */
-    /* get unit tests result */
-    uint32_t GetUnitTestResult(void);
     /* print unit tests result */
     void PrintUnitTestErrorCode(void);
 
     /* unit tests ---------------------------------------------------------- */
-    void TestAsyncConsoleOutput(void);
-    void TestInheritBaseClass(void);
-    void TestBinarySearchTree(void);
+    void test_DataProcessorQueueExchange();
 };
 
 extern void StartUnitTesting(void);
