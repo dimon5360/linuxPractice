@@ -50,13 +50,11 @@ UUnitTest::UUnitTest() {
 void UUnitTest::test_DataProcessorQueueExchange() {
     std::shared_ptr<DDataProcessor> d = std::make_shared<DDataProcessor>();
 
-    d->pushInQueue("adcdefg");
+    d->pushInQueue("abcdefg");
     while(true) {
-        std::cout << "unit test ." << std::endl;
         if(!d->isOutQueueEmpty()) {
             d->pullOutQueue();
             unitTestResult = err_type_ut::ERR_OK;
-            break;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_TIMEOUT));
     }

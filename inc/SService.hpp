@@ -14,29 +14,31 @@
 #include <string>
 #include <iostream>
 
+/* basic class for microservices */
 class SService
 {
+
 public:
     SService() {
-        std::cout << "Constructing the service." << std::endl;
+        std::cout << __func__ << "()" << std::endl;
     }
     virtual ~SService() {
-        std::cout << "Destructing the service." << std::endl;
+        std::cout << __func__ << "()" << std::endl;
     }
 
-    /* interfaces for work with queue -------------------------------------- */
-    /* Push the output data to queue */
-    void pushOutQueue(std::string);
-    /* Push the input data to queue */
-    void pushInQueue(std::string);
-    /* Get output data from queue */
-    std::string pullOutQueue(void);
-    /* Get input data from queue */
-    std::string pullInQueue(void);
-    /* Check that input data queue is empty */
-    bool isInQueueEmpty(void);
-    /* Check that output data queue is empty */
-    bool isOutQueueEmpty(void);
+    // /* interfaces for work with queue -------------------------------------- */
+    // /* Push the output data to queue */
+    // void pushOutQueue(const std::string&);
+    // /* Push the input data to queue */
+    // void pushInQueue(const std::string&);
+    // /* Get output data from queue */
+    // std::string pullOutQueue(void);
+    // /* Get input data from queue */
+    // std::string pullInQueue(void);
+    // /* Check that input data queue is empty */
+    // bool isInQueueEmpty(void);
+    // /* Check that output data queue is empty */
+    // bool isOutQueueEmpty(void);
 };
 
 

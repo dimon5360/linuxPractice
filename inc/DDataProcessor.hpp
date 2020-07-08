@@ -13,16 +13,18 @@
 /* local headers */
 #include "SService.hpp"
 
-/* boost c++ lib heades */
-#include <boost/thread.hpp>
-
 /* std C++ lib headers */
 #include <thread>
 #include <queue>
 #include <string> 
 
-class DDataProcessor: SService {
+#include <boost/thread/mutex.hpp>
+
+class DDataProcessor: public SService {
+
 private:
+
+    boost::mutex _mtx;
 
     std::queue<std::string> inQueueRequest;
     std::queue<std::string> outQueueResponse;
@@ -30,13 +32,7 @@ private:
     /* data processor main handler */
     void handle();
 
-    /* private interfaces for work with queue ------------------------------ */
-    /* Get input data from queue */
-    std::string pullInQueue(void);
-    /* Push the output data to queue */
-    void pushOutQueue(std::string);
-    /* Check that input data queue is empty */
-    bool isInQueueEmpty(void);  
+    void RevString(std::string &);
 
 public:
 
@@ -46,10 +42,17 @@ public:
     ~DDataProcessor();
 
     /* public interfaces for work with queue ------------------------------- */
+    /* Push the output data to queue */
+    void pushOutQueue(const std::string &) ;
     /* Push the input data to queue */
-    void pushInQueue(std::string);
+    void pushInQueue(const std::string &) ;
     /* Get output data from queue */
-    std::string pullOutQueue(void);
+    std::string pullOutQueue(void) ;
+    /* Get input data from queue */
+    std::string pullInQueue(void) ;
     /* Check that output data queue is empty */
-    bool isOutQueueEmpty(void);
+    bool isOutQueueEmpty(void) ;
+    /* Check that input data queue is empty */
+    bool isInQueueEmpty(void) ;  
+
 };

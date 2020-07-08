@@ -10,12 +10,11 @@
 
 #include "SService.hpp"
 
-class SServer : SService {
+class SServer {
 
 
 public:
     SServer();
-
     ~SServer();
 
     /* interfaces for work with queue -------------------------------------- */

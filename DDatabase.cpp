@@ -62,3 +62,47 @@ void DDatabase::handle() {
         boost::this_thread::sleep_for(boost::chrono::milliseconds(THREAD_TIMEOUT));
     }
 }
+
+/* Push the output data to queue */
+void DDatabase::pushOutQueue(const std::string & resp) {
+    std::cout << "Response to queue: " << resp << std::endl; 
+    outQueueResponse.push(resp);
+}
+
+/* Push the input data to queue */
+void DDatabase::pushInQueue(const std::string & req) {
+    std::cout << "Request to queue: " << req << std::endl; 
+    inQueueRequest.push(req);
+}
+
+/* Get output data from queue */
+std::string DDatabase::pullOutQueue(void) {
+    std::string resp;
+    if(!isOutQueueEmpty()) {
+        resp = outQueueResponse.front();
+        outQueueResponse.pop();
+        std::cout << "Response from queue: " << resp << std::endl; 
+    }
+    return resp;
+}
+
+/* Get input data from queue */
+std::string DDatabase::pullInQueue(void) {
+    std::string req;
+    if(!isInQueueEmpty()) {
+        req = inQueueRequest.front();
+        inQueueRequest.pop();
+        std::cout << "Request from queue: " << req << std::endl; 
+    }
+    return req;
+}
+
+/* Check that input data queue is empty */
+bool DDatabase::isInQueueEmpty(void) {
+    return inQueueRequest.empty();
+}
+
+/* Check that output data queue is empty */
+bool DDatabase::isOutQueueEmpty(void) {
+    return outQueueResponse.empty();
+}
