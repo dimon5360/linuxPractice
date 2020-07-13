@@ -31,9 +31,7 @@ private:
  
     /* data processor main handler */
     void handle();
-
-    void RevString(std::string &);
-
+    
 public:
 
     /* data base class constructor */

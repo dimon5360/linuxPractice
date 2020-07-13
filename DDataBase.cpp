@@ -11,7 +11,7 @@
 /* local headers */
 #include "main.h"
 #include "config.h"
-#include "DDatabase.hpp"
+#include "DDataBase.hpp"
 
 /* Boost C++ headers */
 #include <boost/format.hpp>
@@ -27,10 +27,6 @@ DDatabase::DDatabase() {
     std::cout << __func__ << "()" << std::endl;
 #endif /* DATA_BASE_CALLED_FUNCTION */
 
-    std::cout << "Object of DDatabase class created." << std::endl;
-
-
-
     /* TODO: code below commented to test async realization 
      of data base class instead multithread */
 
@@ -44,9 +40,7 @@ DDatabase::DDatabase() {
 DDatabase::~DDatabase() {
 #if DATA_BASE_CALLED_FUNCTION
     std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_BASE_CALLED_FUNCTION */
-    
-    std::cout << "Object of DDatabase class removed." << std::endl;    
+#endif /* DATA_BASE_CALLED_FUNCTION */  
 }
 
 /** 
@@ -54,55 +48,79 @@ DDatabase::~DDatabase() {
  * @note Function calls in single thread
  */
 void DDatabase::handle() {
-// #if DATA_BASE_CALLED_FUNCTION
+#if DATA_BASE_CALLED_FUNCTION
     std::cout << __func__ << "()" << std::endl;
-// #endif /* DATA_BASE_CALLED_FUNCTION */
+#endif /* DATA_BASE_CALLED_FUNCTION */
     while(true) {
         std::cout << "." << std::endl;
         boost::this_thread::sleep_for(boost::chrono::milliseconds(THREAD_TIMEOUT));
     }
 }
 
-/* Push the output data to queue */
+/***
+ *  @brief  Push the output data to queue 
+ */
 void DDatabase::pushOutQueue(const std::string & resp) {
+#if DATA_BASE_DEBUG_INFO
     std::cout << "Response to queue: " << resp << std::endl; 
+#endif /* DATA_BASE_DEBUG_INFO */
+
     outQueueResponse.push(resp);
 }
 
-/* Push the input data to queue */
+/***
+ *  @brief  Push the input data to queue
+ */
 void DDatabase::pushInQueue(const std::string & req) {
+#if DATA_BASE_DEBUG_INFO
     std::cout << "Request to queue: " << req << std::endl; 
+#endif /* DATA_BASE_DEBUG_INFO */
+
     inQueueRequest.push(req);
 }
 
-/* Get output data from queue */
+/***
+ *  @brief  Get output data from queue
+ */
 std::string DDatabase::pullOutQueue(void) {
     std::string resp;
     if(!isOutQueueEmpty()) {
         resp = outQueueResponse.front();
         outQueueResponse.pop();
+
+#if DATA_BASE_DEBUG_INFO
         std::cout << "Response from queue: " << resp << std::endl; 
+#endif /* DATA_BASE_DEBUG_INFO */
     }
     return resp;
 }
 
-/* Get input data from queue */
-std::string DDatabase::pullInQueue(void) {
+/***
+ *  @brief  Get input data from queue
+ */
+std::string DDatabase::pullInQueue(void) { 
     std::string req;
     if(!isInQueueEmpty()) {
         req = inQueueRequest.front();
         inQueueRequest.pop();
+
+#if DATA_BASE_DEBUG_INFO
         std::cout << "Request from queue: " << req << std::endl; 
+#endif /* DATA_BASE_DEBUG_INFO */
     }
     return req;
 }
 
-/* Check that input data queue is empty */
+/***
+ *  @brief  Check that input data queue is empty
+ */
 bool DDatabase::isInQueueEmpty(void) {
     return inQueueRequest.empty();
 }
 
-/* Check that output data queue is empty */
+/***
+ *  @brief  Check that output data queue is empty
+ */
 bool DDatabase::isOutQueueEmpty(void) {
     return outQueueResponse.empty();
 }

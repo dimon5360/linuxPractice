@@ -17,6 +17,14 @@
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 
+/* Static private funtions declarations ------------------------------------ */
+
+/* Reverse string for test output of data */
+static void RevString(std::string &origString);
+
+
+/* Public methods implementaions ------------------------------------------- */
+
 /**
  * @brief SServer class constructor
  */
@@ -40,11 +48,32 @@ DDataProcessor::~DDataProcessor() {
     
 }
 
-/* Push the output data to queue */
+/*** 
+ *  @brief  Main data processor class handler
+ */
+void DDataProcessor::handle() {
+    while(true) {
+        if(!isInQueueEmpty()) {
+
+#if DATA_PROC_DEBUG_INFO
+            std::cout << "Queue has a request." << std::endl;
+#endif /* DATA_PROC_DEBUG_INFO */
+
+            std::string req = pullInQueue();   
+            RevString(req);         
+            pushOutQueue(req);
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_TIMEOUT));
+    }
+}
+
+
+/* Public class methods ---------------------------------------------------- */
+
+/***
+ *  @brief  Push the output data to queue
+ */
 void DDataProcessor::pushOutQueue(const std::string & resp) {
-#if DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
 
 #if DATA_PROC_DEBUG_INFO
     std::cout << "Response to queue: " << resp << std::endl;  
@@ -59,11 +88,10 @@ void DDataProcessor::pushOutQueue(const std::string & resp) {
     outQueueResponse.push(resp);
 }
 
-/* Push the input data to queue */
+/***
+ *  @brief  Push the input data to queue
+ */
 void DDataProcessor::pushInQueue(const std::string & req) {
-#if DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
 
 #if DATA_PROC_DEBUG_INFO
     std::cout << "Request to queue: " << req << std::endl;  
@@ -78,11 +106,10 @@ void DDataProcessor::pushInQueue(const std::string & req) {
     inQueueRequest.push(req);
 }
 
-/* Get output data from queue */
+/***
+ *  @brief  Get output data from queue
+ */
 std::string DDataProcessor::pullOutQueue(void) {
-#if DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
 
     /* lock mutex for pushing data */
     try {
@@ -103,11 +130,10 @@ std::string DDataProcessor::pullOutQueue(void) {
     return resp;
 }
 
-/* Get input data from queue */
+/***
+ *  @brief  Get input data from queue
+ */
 std::string DDataProcessor::pullInQueue(void) {
-#if DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
 
     /* lock mutex for pushing data */
     try {
@@ -129,53 +155,25 @@ std::string DDataProcessor::pullInQueue(void) {
     return req;
 }
 
-/* Check that input data queue is empty */
+/*** 
+ *  @brief  Check that input data queue is empty 
+ */
 bool DDataProcessor::isInQueueEmpty(void) {
-#if DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
-
     return inQueueRequest.empty();
 }
 
-/* Check that output data queue is empty */
+/*** 
+ *  @brief  Check that output data queue is empty 
+ */
 bool DDataProcessor::isOutQueueEmpty(void) {
-#if DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
-
     return outQueueResponse.empty();
 }
 
-void DDataProcessor::handle() {
-#if DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
+/* Static private functions implementations -------------------------------- */
 
-    while(true) {
-        if(!isInQueueEmpty()) {
-
-#if DATA_PROC_DEBUG_INFO
-            std::cout << "Queue has a request." << std::endl;
-#endif /* DATA_PROC_DEBUG_INFO */
-
-            std::string req = pullInQueue();   
-            RevString(req);         
-            pushOutQueue(req);
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_TIMEOUT));
-    }
-}
-
-void DDataProcessor::RevString(std::string &origString) {
-#if !DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
-    std::string revString;
-
-    size_t size_ = origString.length()-1;
-    for(int i = size_; i >= 0; --i) {
-        revString += origString[i-1];
-    }
-    origString = revString;    
+/*** 
+ *  @brief  Reverse string for test output of data
+ */
+static void RevString(std::string &origString) {
+    std::reverse(origString.begin(), origString.end());
 }
