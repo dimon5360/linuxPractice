@@ -22,6 +22,7 @@ class DDatabase: public SService {
 private:
 
     boost::mutex _mtx;
+    boost::thread _th;
 
     std::queue<std::string> inQueueRequest;
     std::queue<std::string> outQueueResponse;

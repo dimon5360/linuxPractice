@@ -23,7 +23,7 @@
 static void RevString(std::string &origString);
 
 
-/* Public methods implementaions ------------------------------------------- */
+/* Class methods implementaions -------------------------------------------- */
 
 /**
  * @brief SServer class constructor
@@ -33,9 +33,9 @@ DDataProcessor::DDataProcessor() {
     std::cout << __func__ << "()" << std::endl;
 #endif /* DATA_PROC_CALLED_FUNCTION */
 
-    boost::thread(boost::bind(&DDataProcessor::handle, this));
-    // std::thread t(&DDataProcessor::handle, this);
-    // t.detach();
+    /* start thread for main handler */
+    _th = boost::thread(boost::bind(&DDataProcessor::handle, this));
+    _th.detach();
 }
 
 /**
@@ -45,14 +45,19 @@ DDataProcessor::~DDataProcessor() {
 #if DATA_PROC_CALLED_FUNCTION
     std::cout << __func__ << "()" << std::endl;
 #endif /* DATA_PROC_CALLED_FUNCTION */
-    
+    // TODO: also need to check, does queue need clear?
+    _th.~thread();
 }
 
 /*** 
  *  @brief  Main data processor class handler
  */
 void DDataProcessor::handle() {
+#if DATA_PROC_CALLED_FUNCTION
+    std::cout << __func__ << "()" << std::endl;
+#endif /* DATA_PROC_CALLED_FUNCTION */
     while(true) {
+
         if(!isInQueueEmpty()) {
 
 #if DATA_PROC_DEBUG_INFO
@@ -66,9 +71,6 @@ void DDataProcessor::handle() {
         std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_TIMEOUT));
     }
 }
-
-
-/* Public class methods ---------------------------------------------------- */
 
 /***
  *  @brief  Push the output data to queue

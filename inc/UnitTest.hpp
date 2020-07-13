@@ -40,7 +40,7 @@ public:
 
     /* unit tests ---------------------------------------------------------- */
     void test_DataProcessorQueueExchange();
-    void test_DataBaseConnection();
+    void test_DataBaseQueueExchange();
 };
 
 extern void StartUnitTesting(void);
