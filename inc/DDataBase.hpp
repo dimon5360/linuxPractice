@@ -30,6 +30,14 @@ private:
     /* data base main handler */
     void handle();
 
+    /* private interfaces for work with queue ------------------------------ */
+    /* Push the output data to queue */
+    void pushOutQueue(const std::string &);
+    /* Get input data from queue */
+    std::string pullInQueue(void);
+    /* Check that input data queue is empty */
+    bool isInQueueEmpty(void);  
+
 public:
 
     /* data base class constructor */
@@ -38,16 +46,10 @@ public:
     ~DDatabase();
 
     /* public interfaces for work with queue ------------------------------- */
-    /* Push the output data to queue */
-    void pushOutQueue(const std::string &) ;
     /* Push the input data to queue */
-    void pushInQueue(const std::string &) ;
+    void pushInQueue(const std::string &);
     /* Get output data from queue */
-    std::string pullOutQueue(void) ;
-    /* Get input data from queue */
-    std::string pullInQueue(void) ;
+    std::string pullOutQueue(void);
     /* Check that output data queue is empty */
-    bool isOutQueueEmpty(void) ;
-    /* Check that input data queue is empty */
-    bool isInQueueEmpty(void) ;  
+    bool isOutQueueEmpty(void);
 };

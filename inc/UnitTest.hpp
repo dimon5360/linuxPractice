@@ -16,7 +16,8 @@
 /* error codes for unit tests ---------------------------------------------- */
 enum class err_type_ut {
     ERR_OK = 0,
-    ERR_QUEUE_EXCHANGE_FAILED = 1,
+    ERR_QUEUE_EXCHANGE_FAILED,
+    ERR_DB_CONNECTION_FAILED,
 
     ERR_ALL_CODES_MOUNT
 };
@@ -41,6 +42,7 @@ public:
     /* unit tests ---------------------------------------------------------- */
     void test_DataProcessorQueueExchange();
     void test_DataBaseQueueExchange();
+    void test_DataBaseConnection();
 };
 
 extern void StartUnitTesting(void);

@@ -22,6 +22,9 @@
 #include <thread>
 #include <string>
 
+/* external lib for postgres database */
+#include <postgresql/libpq-fe.h>
+
 /* utils for unit test class ----------------------------------------------- */
 /**
  * @brief Print unit tests result 
@@ -52,6 +55,12 @@ UUnitTest::UUnitTest() {
         }
 
         test_DataBaseQueueExchange();
+        if(unitTestResult != err_type_ut::ERR_OK) {
+            PrintUnitTestErrorCode();
+            return;
+        }
+
+        test_DataBaseConnection();
         if(unitTestResult != err_type_ut::ERR_OK) {
             PrintUnitTestErrorCode();
             return;
@@ -105,4 +114,26 @@ void UUnitTest::test_DataBaseQueueExchange() {
         std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_TIMEOUT));
     }
     unitTestResult = err_type_ut::ERR_QUEUE_EXCHANGE_FAILED;
+}
+
+
+/***
+ *  @brief  Test the connection to main db
+ */
+void UUnitTest::test_DataBaseConnection() {
+#if UNIT_TEST_CALLED_FUNCTION
+    std::cout << __func__ << "()" << std::endl;
+#endif /* UNIT_TEST_CALLED_FUNCTION */
+
+    PGconn *conn;
+    std::string req = "dbname=users_db host=localhost port=5432 user=admin password=admin1234";
+    conn = PQconnectdb(req.c_str());
+
+    if(PQstatus(conn) != CONNECTION_OK) {
+        unitTestResult = err_type_ut::ERR_DB_CONNECTION_FAILED;
+        std::cout << "Connection statis is " << PQerrorMessage(conn) << std::endl;
+        PQfinish(conn);
+    } else {
+        unitTestResult = err_type_ut::ERR_OK;
+    }
 }
