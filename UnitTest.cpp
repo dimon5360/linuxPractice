@@ -34,6 +34,8 @@ void UUnitTest::PrintUnitTestErrorCode(void) {
     std::cout << __func__ << "()" << std::endl;
 #endif /* UNIT_TEST_CALLED_FUNCTION */
 
+
+
 #if UNIT_TEST_DEBUG_INFO
     static std::string head = "Unit test result failed with error ";
     std::cout << head << boost::format("%u") % 
@@ -136,4 +138,15 @@ void UUnitTest::test_DataBaseConnection() {
     } else {
         unitTestResult = err_type_ut::ERR_OK;
     }
+}
+
+/* C++ boost lib headers */
+#include <boost/beast/websocket.hpp>
+
+/***
+ *  @brief  Test creatition of WebSocket server
+ */
+void UUnitTest::test_WebSocketServer() {
+
+        unitTestResult = err_type_ut::ERR_OK;
 }

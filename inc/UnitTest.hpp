@@ -43,6 +43,7 @@ public:
     void test_DataProcessorQueueExchange();
     void test_DataBaseQueueExchange();
     void test_DataBaseConnection();
+    void test_WebSocketServer();
 };
 
 extern void StartUnitTesting(void);

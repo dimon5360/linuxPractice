@@ -17,7 +17,6 @@
 #include <iostream>
 #include <ctime>
 
-
 using namespace boost::asio;
 
 typedef boost::shared_ptr<ip::tcp::socket> socket_ptr;
