@@ -18,6 +18,7 @@ enum class err_type_ut {
     ERR_OK = 0,
     ERR_QUEUE_EXCHANGE_FAILED,
     ERR_DB_CONNECTION_FAILED,
+    ERR_SERVER_START_FAILED,
 
     ERR_ALL_CODES_MOUNT
 };
