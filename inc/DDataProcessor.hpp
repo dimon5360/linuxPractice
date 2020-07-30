@@ -20,7 +20,7 @@
 
 #include <boost/thread/mutex.hpp>
 
-class DDataProcessor: public SService {
+class DDataProcessor final :  SService {
 
 private:
 
@@ -35,11 +35,11 @@ private:
 
     /* private interfaces for work with queue ------------------------------ */
     /* Push the output data to queue */
-    void pushOutQueue(const std::string &);    
+    void pushOutQueue(const std::string &) override;    
     /* Get input data from queue */
-    std::string pullInQueue(void);
+    std::string pullInQueue(void) override;
     /* Check that input data queue is empty */
-    bool isInQueueEmpty(void);  
+    bool isInQueueEmpty(void) override;  
     
 public:
 
@@ -50,10 +50,10 @@ public:
 
     /* public interfaces for work with queue ------------------------------- */
     /* Push the input data to queue */
-    void pushInQueue(const std::string &);
+    void pushInQueue(const std::string &) override;
     /* Get output data from queue */
-    std::string pullOutQueue(void);
+    std::string pullOutQueue(void) override;
     /* Check that output data queue is empty */
-    bool isOutQueueEmpty(void);
+    bool isOutQueueEmpty(void) override;
 
 };

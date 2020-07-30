@@ -18,6 +18,13 @@
 #define UNIT_TEST_DEBUG_INFO            1
 #define UNIT_TEST_CALLED_FUNCTION       1
 
+/* unit tests */
+#define UNIT_TEST_DATA_PROCESSOR_QUEUE  1
+#define UNIT_TEST_DATA_BASE_QUEUE       1
+#define UNIT_TEST_DATA_BASE_CONNECTION  1
+#define UNIT_TEST_WEBSOCKET_SERVER      0
+
+
 #endif /* UNIT_TESTS_ENABLE */
 
 /* logger items ------------------------------------------------------------ */

@@ -41,10 +41,21 @@ public:
     void PrintUnitTestErrorCode(void);
 
     /* unit tests ---------------------------------------------------------- */
+#if UNIT_TEST_DATA_PROCESSOR_QUEUE
     void test_DataProcessorQueueExchange();
+#endif /* UNIT_TEST_DATA_PROCESSOR_QUEUE */
+
+#if UNIT_TEST_DATA_BASE_QUEUE
     void test_DataBaseQueueExchange();
+#endif /* UNIT_TEST_DATA_BASE_QUEUE */
+
+#if UNIT_TEST_DATA_BASE_CONNECTION
     void test_DataBaseConnection();
+#endif /* UNIT_TEST_DATA_PROCESSOR_QUEUE */
+
+#if UNIT_TEST_WEBSOCKET_SERVER
     void test_WebSocketServer();
+#endif /* UNIT_TEST_WEBSOCKET_SERVER */
 };
 
 extern void StartUnitTesting(void);

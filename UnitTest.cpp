@@ -12,6 +12,8 @@
 #include "main.h"
 #include "config.h"
 
+#if UNIT_TESTS_ENABLE
+
 /* user classes */
 #include "UnitTest.hpp"
 #include "DDataProcessor.hpp"
@@ -31,7 +33,7 @@
  */
 void UUnitTest::PrintUnitTestErrorCode(void) {
 #if UNIT_TEST_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
+    std::cout << std::endl << __func__ << "()" << std::endl;
 #endif /* UNIT_TEST_CALLED_FUNCTION */
 
 
@@ -49,30 +51,38 @@ UUnitTest::UUnitTest() {
 #endif /* UNIT_TEST_CALLED_FUNCTION */
     unitTestResult = err_type_ut::ERR_OK;
 
-    {        
+    {      
+#if UNIT_TEST_DATA_PROCESSOR_QUEUE  
         test_DataProcessorQueueExchange();
         if(unitTestResult != err_type_ut::ERR_OK) {
             PrintUnitTestErrorCode();
             return;
         }
+#endif /* UNIT_TEST_DATA_PROCESSOR_QUEUE */
 
+#if UNIT_TEST_DATA_BASE_QUEUE
         test_DataBaseQueueExchange();
         if(unitTestResult != err_type_ut::ERR_OK) {
             PrintUnitTestErrorCode();
             return;
         }
+#endif /* UNIT_TEST_DATA_BASE_QUEUE */
 
+#if UNIT_TEST_DATA_BASE_CONNECTION
         test_DataBaseConnection();
         if(unitTestResult != err_type_ut::ERR_OK) {
             PrintUnitTestErrorCode();
             return;
         }
+#endif /* UNIT_TEST_DATA_BASE_CONNECTION */
 
+#if UNIT_TEST_WEBSOCKET_SERVER
         test_WebSocketServer();
         if(unitTestResult != err_type_ut::ERR_OK) {
             PrintUnitTestErrorCode();
             return;
         }
+#endif /* UNIT_TEST_WEBSOCKET_SERVER */
 #if UNIT_TEST_DEBUG_INFO
         std::cout << "Unit testing result succed." << std::endl;
 #endif /* UNIT_TEST_DEBUG_INFO */
@@ -81,12 +91,14 @@ UUnitTest::UUnitTest() {
 
 /* start of unit testing  -------------------------------------------------- */
 
+//-----------------------------------------------------------------------------
+#if UNIT_TEST_DATA_PROCESSOR_QUEUE
 /***
  *  @brief  Test an exchange of data using std::queue
  */
 void UUnitTest::test_DataProcessorQueueExchange() {
 #if UNIT_TEST_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
+    std::cout << std::endl << __func__ << "()" << std::endl;
 #endif /* UNIT_TEST_CALLED_FUNCTION */
     std::unique_ptr<DDataProcessor> d = std::make_unique<DDataProcessor>();
 
@@ -101,13 +113,16 @@ void UUnitTest::test_DataProcessorQueueExchange() {
     }
     unitTestResult = err_type_ut::ERR_QUEUE_EXCHANGE_FAILED;
 }
+#endif /* UNIT_TEST_DATA_PROCESSOR_QUEUE */
 
+//-----------------------------------------------------------------------------
+#if UNIT_TEST_DATA_BASE_QUEUE
 /***
  *  @brief  Test a data exchange through std::queue
  */
 void UUnitTest::test_DataBaseQueueExchange() {
 #if UNIT_TEST_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
+    std::cout << std::endl << __func__ << "()" << std::endl;
 #endif /* UNIT_TEST_CALLED_FUNCTION */
     std::unique_ptr<DDatabase> db = std::make_unique<DDatabase>();
 
@@ -122,47 +137,48 @@ void UUnitTest::test_DataBaseQueueExchange() {
     }
     unitTestResult = err_type_ut::ERR_QUEUE_EXCHANGE_FAILED;
 }
+#endif /* UNIT_TEST_DATA_BASE_QUEUE */
 
-
+//-----------------------------------------------------------------------------
+#if UNIT_TEST_DATA_BASE_CONNECTION
 /***
  *  @brief  Test the connection to main db
  */
 void UUnitTest::test_DataBaseConnection() {
 #if UNIT_TEST_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
+    std::cout << std::endl << __func__ << "()" << std::endl;
 #endif /* UNIT_TEST_CALLED_FUNCTION */
 
     PGconn *conn;
-    std::string req = "dbname=users_db host=localhost port=5432 user=admin password=admin1234";
+    std::string req = "dbname=users_db host=localhost \
+        port=5432 user=admin password=admin1234";
     conn = PQconnectdb(req.c_str());
 
     if(PQstatus(conn) != CONNECTION_OK) {
         unitTestResult = err_type_ut::ERR_DB_CONNECTION_FAILED;
-        std::cout << "Connection statis is " << PQerrorMessage(conn) << std::endl;
+        std::cout << "Connection statis is " 
+                    << PQerrorMessage(conn) << std::endl;
         PQfinish(conn);
     } else {
         unitTestResult = err_type_ut::ERR_OK;
     }
 }
+#endif /* UNIT_TEST_DATA_BASE_CONNECTION */
 
+//------------------------------------------------------------------------------
+#if UNIT_TEST_WEBSOCKET_SERVER
 /* C++ boost lib headers */
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <cstdlib>
 #include <functional>
-#include <iostream>
-#include <string>
-#include <thread>
 
 using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 namespace websocket = boost::beast::websocket;  // from <boost/beast/websocket.hpp>
 
-//------------------------------------------------------------------------------
-
 // Echoes back all received WebSocket messages
-void
-do_session(tcp::socket& socket)
+void do_session(tcp::socket& socket)
 {
     try
     {
@@ -201,6 +217,9 @@ do_session(tcp::socket& socket)
  *  @brief  Test creatition of WebSocket server
  */
 void UUnitTest::test_WebSocketServer() {
+#if UNIT_TEST_CALLED_FUNCTION
+    std::cout << std::endl << __func__ << "()" << std::endl;
+#endif /* UNIT_TEST_CALLED_FUNCTION */
 
     try {
 
@@ -234,3 +253,6 @@ void UUnitTest::test_WebSocketServer() {
     
     unitTestResult = err_type_ut::ERR_OK;
 }
+#endif /* UNIT_TEST_WEBSOCKET_SERVER */
+
+#endif /* UNIT_TESTS_ENABLE */
