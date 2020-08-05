@@ -19,31 +19,7 @@
 /* std C++ headers */
 #include <iostream>
 
-
 /* Public methods implementaions ------------------------------------------- */
-/**
- *  @brief  Data base class constructor
- */
-DDatabase::DDatabase() {
-#if DATA_BASE_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_BASE_CALLED_FUNCTION */
-
-    /* start thread for main handler */
-    _th = boost::thread(boost::bind(&DDatabase::handle, this));
-    _th.detach();
-}
-
-/**
- *  @brief  Data base class destructor
- */
-DDatabase::~DDatabase() {
-#if DATA_BASE_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_BASE_CALLED_FUNCTION */  
-    // TODO: also need to check, does queue need clear?
-    _th.~thread();
-}
 
 /** 
  *  @brief  Data base main handler 
@@ -67,6 +43,42 @@ void DDatabase::handle() {
         }
         boost::this_thread::sleep_for(boost::chrono::milliseconds(THREAD_TIMEOUT));
     }
+}
+
+/** 
+ *  @brief  Get connection to PostgreSQL DB status
+ */
+bool DDatabase::GetConnectionStatus() {
+    return pgConn->GetConnectionStatus();
+}
+
+/**
+ *  @brief  Data base class constructor
+ */
+DDatabase::DDatabase() {
+#if DATA_BASE_CALLED_FUNCTION
+    std::cout << __func__ << "()" << std::endl;
+#endif /* DATA_BASE_CALLED_FUNCTION */
+
+    pgConn = std::make_unique<PgConnection>();
+    if(!pgConn->GetConnectionStatus()) {
+        return;
+    }
+
+    /* start thread for main handler */
+    _th = boost::thread(boost::bind(&DDatabase::handle, this));
+    _th.detach();
+}
+
+/**
+ *  @brief  Data base class destructor
+ */
+DDatabase::~DDatabase() {
+#if DATA_BASE_CALLED_FUNCTION
+    std::cout << __func__ << "()" << std::endl;
+#endif /* DATA_BASE_CALLED_FUNCTION */  
+    // TODO: also need to check, does queue need clear?
+    _th.~thread();
 }
 
 /***

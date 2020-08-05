@@ -1,4 +1,4 @@
-/*********************
+/******************************************************************************
  * @file DDatabase.hpp
  * @brief Derived from SService class for data base exchange.
  * 
@@ -6,12 +6,13 @@
  * 
  * @version 0.0.1 
  * @date 01.06.2020
- */
+ *****************************************************************************/
 
 #pragma once
 
 /* local headers */
 #include "SService.hpp"
+#include "PgConnection.hpp"
 
 /* std C++ headers */
 #include <thread>
@@ -27,6 +28,8 @@ private:
     std::queue<std::string> inQueueRequest;
     std::queue<std::string> outQueueResponse;
 
+    std::unique_ptr<PgConnection> pgConn;
+
     /* data base main handler */
     void handle();
 
@@ -37,6 +40,8 @@ private:
     std::string pullInQueue(void) override;
     /* Check that input data queue is empty */
     bool isInQueueEmpty(void) override;  
+
+    /* postgres methods declarations --------------------------------------- */
 
 public:
 
@@ -52,4 +57,6 @@ public:
     std::string pullOutQueue(void) override;
     /* Check that output data queue is empty */
     bool isOutQueueEmpty(void) override;
+
+    bool GetConnectionStatus();
 };

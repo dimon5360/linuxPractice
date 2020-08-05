@@ -69,7 +69,7 @@ UUnitTest::UUnitTest() {
 #endif /* UNIT_TEST_DATA_BASE_QUEUE */
 
 #if UNIT_TEST_DATA_BASE_CONNECTION
-        test_DataBaseConnection();
+        test_DataBasePgConnection();
         if(unitTestResult != err_type_ut::ERR_OK) {
             PrintUnitTestErrorCode();
             return;
@@ -144,23 +144,17 @@ void UUnitTest::test_DataBaseQueueExchange() {
 /***
  *  @brief  Test the connection to main db
  */
-void UUnitTest::test_DataBaseConnection() {
+void UUnitTest::test_DataBasePgConnection() {
 #if UNIT_TEST_CALLED_FUNCTION
     std::cout << std::endl << __func__ << "()" << std::endl;
 #endif /* UNIT_TEST_CALLED_FUNCTION */
 
-    PGconn *conn;
-    std::string req = "dbname=users_db host=localhost \
-        port=5432 user=admin password=admin1234";
-    conn = PQconnectdb(req.c_str());
+    std::unique_ptr<DDatabase> db = std::make_unique<DDatabase>();
 
-    if(PQstatus(conn) != CONNECTION_OK) {
-        unitTestResult = err_type_ut::ERR_DB_CONNECTION_FAILED;
-        std::cout << "Connection statis is " 
-                    << PQerrorMessage(conn) << std::endl;
-        PQfinish(conn);
-    } else {
+    if(db->GetConnectionStatus()) {
         unitTestResult = err_type_ut::ERR_OK;
+    } else {
+        unitTestResult = err_type_ut::ERR_DB_CONNECTION_FAILED;
     }
 }
 #endif /* UNIT_TEST_DATA_BASE_CONNECTION */

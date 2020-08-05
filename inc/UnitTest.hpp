@@ -50,7 +50,7 @@ public:
 #endif /* UNIT_TEST_DATA_BASE_QUEUE */
 
 #if UNIT_TEST_DATA_BASE_CONNECTION
-    void test_DataBaseConnection();
+    void test_DataBasePgConnection();
 #endif /* UNIT_TEST_DATA_PROCESSOR_QUEUE */
 
 #if UNIT_TEST_WEBSOCKET_SERVER
