@@ -1,6 +1,6 @@
 /******************************************************************************
  * @file    PgConnection.hpp
- * @brief   Separate class definition to process postgres connection.
+ * @brief   Separate class definitions to process postgres connection.
  * 
  * @author  kalmykov Dmitry
  * 
@@ -8,6 +8,7 @@
  * @date    05.08.2020
  *****************************************************************************/
 
+/* local headers */
 #include "PgConnection.hpp"
 
 /* external lib for postgres database */

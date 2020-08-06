@@ -24,9 +24,6 @@
 #include <thread>
 #include <string>
 
-/* external lib for postgres database */
-#include <postgresql/libpq-fe.h>
-
 /* utils for unit test class ----------------------------------------------- */
 /**
  * @brief Print unit tests result 

@@ -1,12 +1,14 @@
 /******************************************************************************
  * @file    PgConnection.hpp
- * @brief   Separate class declaration to process postgres connection.
+ * @brief   Separate class declarations to process postgres connection.
  * 
  * @author  kalmykov Dmitry
  * 
  * @version 0.0.1 
  * @date    05.08.2020
  *****************************************************************************/
+
+#pragma once
 
 /* C++ std lib headers */
 #include <string> 
