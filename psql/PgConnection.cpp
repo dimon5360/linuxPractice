@@ -39,7 +39,7 @@ void PgConnection::PgSetConnection(std::string db_name,
                                    std::string host,
                                    std::string port,
                                    std::string username,
-                                   std::string pass) 
+                                   std::string pass) noexcept
 {
     if(!connectionStatus)  {
         using namespace std;
@@ -63,8 +63,8 @@ void PgConnection::PgSetConnection(std::string db_name,
 /***
  *  @brief  Reset connection to user postgres db
  */
-void PgConnection::PgResetConnection() {
-        using namespace std;
+constexpr void PgConnection::PgResetConnection() noexcept {
+    using namespace std;
     if(connectionStatus) {
         PQfinish(conn);
         cout << "Connection had been reset." << endl;
@@ -74,6 +74,6 @@ void PgConnection::PgResetConnection() {
 /***
  *  @brief  Reset connection to user postgres db
  */
-bool PgConnection::GetConnectionStatus() {
+bool PgConnection::GetConnectionStatus() noexcept {
     return connectionStatus;
 }

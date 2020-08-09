@@ -1,5 +1,5 @@
 /**
- *  @file SServer.cpp
+ *  @file STcpServer.cpp
  *  @brief Class of TCP server
  *
  *  @author Kalmykov Dmitry
@@ -11,7 +11,7 @@
 /* local headers */
 #include "main.h"
 #include "config.h"
-#include "SServer.hpp"
+#include "STcpServer.hpp"
 
 /* Boost C++ headers */
 #include <boost/format.hpp>
@@ -38,16 +38,16 @@ std::string make_datetime_string(void) {
 
 
 /**
- * @brief SServer class constructor
+ * @brief STcpServer class constructor
  */
-SServer::SServer() {
+STcpServer::STcpServer() {
 #if TCP_SERVER_CALLED_FUNCTION
     std::cout << __func__ << "()" << std::endl;
 #endif /* TCP_SERVER_CALLED_FUNCTION */
 
     try {
 
-        std::cout << "Object of SServer class created." << std::endl;
+        std::cout << "Object of STcpServer class created." << std::endl;
         
         // initialize io service
         io_service service;
@@ -90,14 +90,14 @@ SServer::SServer() {
 }
 
 /**
- * @brief SServer class destructor
+ * @brief STcpServer class destructor
  */
-SServer::~SServer() {
+STcpServer::~STcpServer() {
 #if TCP_SERVER_CALLED_FUNCTION
     std::cout << __func__ << "()" << std::endl;
 #endif /* TCP_SERVER_CALLED_FUNCTION */
     
-    std::cout << "Object of SServer class removed." << std::endl;
+    std::cout << "Object of STcpServer class removed." << std::endl;
     
 }
 

@@ -11,10 +11,10 @@
 // #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/bind/bind.hpp>
 
-/* application version v.0.0.15 from 06.08.2020 */
+/* application version v.0.0.16 from 09.08.2020 */
 #define MAJOR           0
 #define MINOR           0
-#define BUILD           15
+#define BUILD           16
 
 /* deafult thread timeout */
 #define THREAD_TIMEOUT  5        // 5 ms

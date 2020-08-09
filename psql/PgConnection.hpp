@@ -28,7 +28,7 @@ public:
                          std::string,
                          std::string,
                          std::string,
-                         std::string);
-    void PgResetConnection();
-    bool GetConnectionStatus();
+                         std::string) noexcept;
+    constexpr void PgResetConnection() noexcept;
+    bool GetConnectionStatus() noexcept;
 };

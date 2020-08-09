@@ -33,7 +33,7 @@ public:
          where_params(req.where_params) 
     {   };
     /* move constructor */
-    PgRequest(PgRequest && req) noexcept :
+    PgRequest(PgRequest && req) :
          select_params(std::move(req.select_params)),
          from_params(std::move(req.from_params)),
          where_params(std::move(req.where_params)) 
@@ -42,5 +42,5 @@ public:
     /* PgRequest class destructor */
     ~PgRequest();
     /* Print PgRequest object fields */
-    void PgPrintReqInfo();
+    void PgPrintReqInfo() noexcept;
 };

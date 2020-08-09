@@ -29,10 +29,6 @@ static void RevString(std::string &origString);
  * @brief SServer class constructor
  */
 DDataProcessor::DDataProcessor() {
-#if DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
-
     /* start thread for main handler */
     _th = boost::thread(boost::bind(&DDataProcessor::handle, this));
     _th.detach();
@@ -42,9 +38,6 @@ DDataProcessor::DDataProcessor() {
  * @brief SServer class destructor
  */
 DDataProcessor::~DDataProcessor() {
-#if DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
     // TODO: also need to check, does queue need clear?
     _th.~thread();
 }
@@ -53,17 +46,9 @@ DDataProcessor::~DDataProcessor() {
  *  @brief  Main data processor class handler
  */
 void DDataProcessor::handle() {
-#if DATA_PROC_CALLED_FUNCTION
-    std::cout << __func__ << "()" << std::endl;
-#endif /* DATA_PROC_CALLED_FUNCTION */
     while(true) {
 
         if(!isInQueueEmpty()) {
-
-#if DATA_PROC_DEBUG_INFO
-            std::cout << "Queue has a request." << std::endl;
-#endif /* DATA_PROC_DEBUG_INFO */
-
             std::string req = pullInQueue();   
             RevString(req);         
             pushOutQueue(req);
@@ -76,11 +61,7 @@ void DDataProcessor::handle() {
  *  @brief  Push the output data to queue
  */
 void DDataProcessor::pushOutQueue(const std::string & resp) {
-
-#if DATA_PROC_DEBUG_INFO
-    std::cout << "Response to queue: " << resp << std::endl;  
-#endif /* DATA_PROC_DEBUG_INFO */
-
+    
     /* lock mutex for pushing data */
     try {
         boost::lock_guard<boost::mutex> lock(_mtx);
@@ -95,10 +76,6 @@ void DDataProcessor::pushOutQueue(const std::string & resp) {
  */
 void DDataProcessor::pushInQueue(const std::string & req) {
 
-#if DATA_PROC_DEBUG_INFO
-    std::cout << "Request to queue: " << req << std::endl;  
-#endif /* DATA_PROC_DEBUG_INFO */
-    
     /* lock mutex for pushing data */
     try {
         boost::lock_guard<boost::mutex> lock(_mtx);
@@ -124,10 +101,6 @@ std::string DDataProcessor::pullOutQueue(void) {
     if(!isOutQueueEmpty()) {
         resp = outQueueResponse.front();
         outQueueResponse.pop();
-
-#if DATA_PROC_DEBUG_INFO
-        std::cout << "Response from queue: " << resp << std::endl; 
-#endif /* DATA_PROC_DEBUG_INFO */
     }
     return resp;
 }
@@ -149,10 +122,6 @@ std::string DDataProcessor::pullInQueue(void) {
     if(!isInQueueEmpty()) {
         req = inQueueRequest.front();
         inQueueRequest.pop();
-
-#if DATA_PROC_DEBUG_INFO
-        std::cout << "Request from queue: " << req << std::endl; 
-#endif /* DATA_PROC_DEBUG_INFO */
     }
     return req;
 }

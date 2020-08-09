@@ -1,5 +1,5 @@
 /*********************
- * @file SServer.hpp
+ * @file STcpServer.hpp
  * @brief Parent class header for other classes based on it.
  * 
  * @author kalmykov Dmitry
@@ -10,12 +10,12 @@
 
 #include "SService.hpp"
 
-class SServer {
+class STcpServer {
 
 
 public:
-    SServer();
-    ~SServer();
+    STcpServer();
+    ~STcpServer();
 
     /* interfaces for work with queue -------------------------------------- */
     /* Push the output data to queue */

@@ -30,18 +30,18 @@ PgRequest::~PgRequest() {
 /***
  *  @brief  Print PgRequest object fields
  */
-void PgRequest::PgPrintReqInfo() {
+void PgRequest::PgPrintReqInfo() noexcept {
     using namespace std;
     cout << "Request data:";
     cout << "\n\tSELECT params\n";
     for(auto &v : select_params) {
         cout << v << " ";
     }
-    cout << "\n\FROM params\n";
+    cout << "\n\tFROM params\n";
     for(auto &v : from_params) {
         cout << v << " ";
     }
-    cout << "\n\WHERE params\n";
+    cout << "\n\tWHERE params\n";
     for(auto &v : where_params) {
         cout << v << " ";
     }
