@@ -27,6 +27,17 @@ typedef boost::shared_ptr<ip::tcp::socket> socket_ptr;
 static void client_session(socket_ptr sock);
 
 /**
+ * @brief This data must be transfered first
+ */
+std::string make_datetime_string(void) {
+
+    using namespace std;
+    time_t now = time(0);
+    return ctime(&now);
+}
+
+
+/**
  * @brief SServer class constructor
  */
 SServer::SServer() {
@@ -34,24 +45,47 @@ SServer::SServer() {
     std::cout << __func__ << "()" << std::endl;
 #endif /* TCP_SERVER_CALLED_FUNCTION */
 
-    std::cout << "Object of SServer class created." << std::endl;
-    
-    io_service service;
-    ip::tcp::endpoint ep(ip::address::from_string("0.0.0.0"), 40400);
+    try {
 
-    ip::tcp::acceptor acc(service, ep);
-
-    // wait a client
-    while(true) {
-        // create new socket obj and put in reference
-        socket_ptr sock(new ip::tcp::socket(service));
-        // accept a connection for new client
-        acc.accept(*sock);
-        // create single thread for new client connection
-        boost::thread(boost::bind(client_session, sock));
-        std::cout << "Client accepted\n";
+        std::cout << "Object of SServer class created." << std::endl;
         
-        // boost::this_thread::sleep_for(boost::chrono::milliseconds(THREAD_TIMEOUT));
+        // initialize io service
+        io_service service;
+        // listen port 40400 ipV4
+        ip::tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 40401);
+        // create an acceptor
+        ip::tcp::acceptor acc(service, ep);
+
+        std::stringstream ss;
+
+        while(true) {
+            // create new socket obj and put in reference
+            socket_ptr sock(new ip::tcp::socket(service));
+            // accept a connection for new client
+            acc.accept(*sock);
+
+            std::cout << "Client accepted.\n"; 
+
+            std::string message = make_datetime_string();
+            
+
+            ss  << "HTTP/1.1 200 OK" << message;
+
+            std::cout << "Connection time: " << ss.str() << std::endl; 
+
+            boost::system::error_code ignored_code;
+
+            boost::asio::write(*sock, boost::asio::buffer(ss.str()), ignored_code);
+
+            // create single thread for new client connection
+            // boost::thread(boost::bind(client_session, sock));
+            // std::cout << "Client accepted\n";
+            
+            boost::this_thread::sleep_for(boost::chrono::milliseconds(THREAD_TIMEOUT));
+        }
+    }
+    catch(std::exception& e) {
+        std::cerr << e.what() << std::endl;
     }
 }
 

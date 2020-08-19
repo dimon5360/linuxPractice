@@ -45,6 +45,7 @@ public:
     /* unit tests ---------------------------------------------------------- */
     void TestAsyncConsoleOutput(void);
     void TestInheritBaseClass(void);
+    void TestBinarySearchTree(void);
 };
 
 extern void StartUnitTesting(void);
