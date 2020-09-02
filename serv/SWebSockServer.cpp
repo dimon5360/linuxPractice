@@ -17,8 +17,12 @@
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
 #include <boost/asio/ip/tcp.hpp>
+
+/* C++ std lib headers */
 #include <cstdlib>
+#include <algorithm>
 #include <functional>
+#include <string>
 
 using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 namespace websocket = boost::beast::websocket;  // from <boost/beast/websocket.hpp>
@@ -41,10 +45,14 @@ void do_session(tcp::socket& socket)
 
             // Read a message
             ws.read(buffer);
-
-            // Echo the message back
-            ws.text(ws.got_text());
-            ws.write(buffer.data());
+            if(ws.got_text()) {
+                // Echo the message back
+                ws.text(ws.got_text());
+                std::string str = buffers_to_string(buffer.data()); 
+                std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+                
+                ws.write(boost::asio::buffer(str));
+            }
         }
     }
     catch(boost::system::system_error const& se)
