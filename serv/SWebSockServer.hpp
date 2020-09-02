@@ -28,7 +28,7 @@ private:
 
 public:
 
-    SWebSockServer();
+    SWebSockServer(std::string);
     ~SWebSockServer();
 
     /* interfaces for work with queue -------------------------------------- */
