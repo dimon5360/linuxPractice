@@ -8,6 +8,7 @@
             "label": "g++ build active file",
             "command": "g++",
             "args": [ 
+                "-std=c++17",
                 "main.cpp",
                 "UnitTest.cpp",
                 "serv/STcpServer.cpp",
@@ -25,7 +26,10 @@
                 "-o",
                 "main",
                 "-I${workspaceFolder}/inc",
-                "-I/usr/local/Cellar/boost/1.72.0_2/include"
+                "-I${workspaceFolder}/psql",
+                "-I${workspaceFolder}/serv",
+                "-I/usr/local/Cellar/boost/1.73.0/include",
+                "-I/usr/local/Cellar/libpq/12.3/bin/"
             ],
             "options": {
                 "cwd": "${workspaceFolder}",
@@ -39,6 +43,18 @@
             "type": "shell",
             "label": "g++ run active file",
             "command": "${workspaceFolder}/main",
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+        },
+        {
+            "type": "shell",
+            "label": "g++ clean",
+            "command": "rm ${workspaceFolder}/main",
             "options": {
                 "cwd": "${workspaceFolder}",
             },

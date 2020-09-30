@@ -12,7 +12,7 @@
 #include "PgConnection.hpp"
 
 /* external lib for postgres database */
-#include <postgresql/libpq-fe.h>
+#include "libpq-fe.h"
 
 /* C++ std lib headers */
 #include <sstream> 
@@ -21,7 +21,7 @@
 static PGconn * conn;
 
 PgConnection::PgConnection() {
-    PgSetConnection("users_db", 
+    PgSetConnection("testdb", 
                     "localhost",
                     "5432",
                     "admin",

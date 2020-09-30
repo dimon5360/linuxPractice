@@ -5,16 +5,16 @@
             "includePath": [
                 "${workspaceFolder}/inc/",
                 "${workspaceFolder}/psql/",
-                "${workspaceFolder}/serv/",
+                "${workspaceFolder}/serv/"
             ],
             "defines": [],
             "macFrameworkPath": [
-                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks"
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks",
+                "/usr/local/Cellar/libpq/12.3/lib"
             ],
-            "compilerPath": "/usr/bin/g++",
+            "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",
-            "cppStandard": "c++17",
-            // "intelliSenseMode": "clang-x64"
+            "cppStandard": "c++17"
         }
     ],
     "version": 4
