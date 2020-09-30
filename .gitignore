@@ -1,7 +1,8 @@
 # ignore .vscode folder
 .vscode/
-# ignore builded file 'main'
-main
-main.o
+# ignore building folder
+Debug/
 # ignore makefile
 makefile
+# ignore docs folder
+__docs/

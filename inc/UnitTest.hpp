@@ -14,8 +14,11 @@
 #include <iostream>
 
 /* error codes for unit tests ---------------------------------------------- */
-enum err_type_ut {
+enum class err_type_ut {
     ERR_OK = 0,
+    ERR_QUEUE_EXCHANGE_FAILED,
+    ERR_DB_CONNECTION_FAILED,
+    ERR_SERVER_START_FAILED,
 
     ERR_ALL_CODES_MOUNT
 };
@@ -23,29 +26,36 @@ enum err_type_ut {
 /* unit test class --------------------------------------------------------- */
 class UUnitTest {
 private: 
-    uint32_t unitTestResult;
+    err_type_ut unitTestResult;
 
 public:
     /* unit test class constructor */
-    UUnitTest() {
-        std::cout << "Unit test class object created." << std::endl;
-        unitTestResult = ERR_OK;
-    }  
+    UUnitTest();
     /* unit test class destructor */ 
     ~UUnitTest() {
         std::cout << "Unit test class object removed." << std::endl;
     }
 
     /* unit test utils ----------------------------------------------------- */
-    /* get unit tests result */
-    uint32_t GetUnitTestResult(void);
     /* print unit tests result */
     void PrintUnitTestErrorCode(void);
 
     /* unit tests ---------------------------------------------------------- */
-    void TestAsyncConsoleOutput(void);
-    void TestInheritBaseClass(void);
-    void TestBinarySearchTree(void);
+#if UNIT_TEST_DATA_PROCESSOR_QUEUE
+    void test_DataProcessorQueueExchange();
+#endif /* UNIT_TEST_DATA_PROCESSOR_QUEUE */
+
+#if UNIT_TEST_DATA_BASE_QUEUE
+    void test_DataBaseQueueExchange();
+#endif /* UNIT_TEST_DATA_BASE_QUEUE */
+
+#if UNIT_TEST_DATA_BASE_CONNECTION
+    void test_DataBasePgConnection();
+#endif /* UNIT_TEST_DATA_PROCESSOR_QUEUE */
+
+#if UNIT_TEST_WEBSOCKET_SERVER
+    void test_WebSocketServer();
+#endif /* UNIT_TEST_WEBSOCKET_SERVER */
 };
 
 extern void StartUnitTesting(void);

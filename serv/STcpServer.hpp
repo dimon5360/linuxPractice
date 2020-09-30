@@ -1,5 +1,5 @@
 /*********************
- * @file SService.hpp
+ * @file STcpServer.hpp
  * @brief Parent class header for other classes based on it.
  * 
  * @author kalmykov Dmitry
@@ -8,30 +8,26 @@
  * @date 01.06.2020
  */
 
-#pragma once
+#include "SService.hpp"
 
-#include <queue>
-#include <string>
-#include <iostream>
+class STcpServer {
 
-/* basic class for microservices */
-class SService
-{
+
 public:
+    STcpServer();
+    ~STcpServer();
 
     /* interfaces for work with queue -------------------------------------- */
     /* Push the output data to queue */
-    virtual void pushOutQueue(const std::string&) { /* ... */ };
+    void pushOutQueue(std::string);
     /* Push the input data to queue */
-    virtual void pushInQueue(const std::string&) { /* ... */ };
+    void pushInQueue(std::string);
     /* Get output data from queue */
-    virtual std::string pullOutQueue(void) { /* ... */ };
+    std::string pullOutQueue(void);
     /* Get input data from queue */
-    virtual std::string pullInQueue(void) { /* ... */ };
+    std::string pullInQueue(void);
     /* Check that input data queue is empty */
-    virtual bool isInQueueEmpty(void) { /* ... */ };
+    bool isInQueueEmpty(void);
     /* Check that output data queue is empty */
-    virtual bool isOutQueueEmpty(void) { /* ... */ };
+    bool isOutQueueEmpty(void);
 };
-
-
