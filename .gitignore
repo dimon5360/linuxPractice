@@ -6,3 +6,10 @@ Debug/
 makefile
 # ignore docs folder
 __docs/
+
+CMakeFiles/
+CMakeCache
+**/CMakeLists.txt
+**/cmake_install.cmake
+**/*.a
+**/Makefile

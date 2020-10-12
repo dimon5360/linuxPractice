@@ -37,6 +37,7 @@ void do_session(tcp::socket& socket)
 
         // Accept the websocket handshake
         ws.accept();
+        std::cout << "New Client accepterd\n";
 
         for(;;)
         {
@@ -51,6 +52,7 @@ void do_session(tcp::socket& socket)
                 std::string str = buffers_to_string(buffer.data()); 
                 std::transform(str.begin(), str.end(), str.begin(), ::tolower);
                 
+                std::cout << "Client msg: \"" << str << "\"\n";
                 ws.write(boost::asio::buffer(str));
             }
         }
