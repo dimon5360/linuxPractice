@@ -12,6 +12,7 @@
 #include "main.h"
 #include "config.h"
 #include "SWebSockServer.hpp"
+#include "CClient.hpp"
 
 /* C++ boost lib headers */
 #include <boost/beast/core.hpp>
@@ -23,12 +24,18 @@
 #include <algorithm>
 #include <functional>
 #include <string>
+#include <unordered_map>
+#include <memory>
 
 using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 namespace websocket = boost::beast::websocket;  // from <boost/beast/websocket.hpp>
 
+#define DEFAULT_USER_ID     10
+
+std::unordered_map<uint32_t, std::unique_ptr<CClient>> userPull;
+
 // Echoes back all received WebSocket messages
-void do_session(tcp::socket& socket)
+void do_session(tcp::socket& socket, uint64_t clientId)
 {
     try
     {
@@ -37,7 +44,7 @@ void do_session(tcp::socket& socket)
 
         // Accept the websocket handshake
         ws.accept();
-        std::cout << "New Client accepterd\n";
+        std::cout << "New Client with ID #" << clientId << " accepted\n";
 
         for(;;)
         {
@@ -46,6 +53,7 @@ void do_session(tcp::socket& socket)
 
             // Read a message
             ws.read(buffer);
+
             if(ws.got_text()) {
                 // Echo the message back
                 ws.text(ws.got_text());
@@ -73,7 +81,11 @@ void do_session(tcp::socket& socket)
  * @brief SWebSockServer class constructor
  */
 SWebSockServer::SWebSockServer(std::string s_port) {
+
+
     std::cout << "Object of SWebSockServer class created." << std::endl;
+
+    uint64_t user_id = DEFAULT_USER_ID;
 
     try {
 
@@ -93,10 +105,12 @@ SWebSockServer::SWebSockServer(std::string s_port) {
             // Block until we get a connection
             acceptor.accept(socket);
 
+            userPull.emplace(make_pair(user_id++, std::make_unique<CClient>()));
+
             // Launch the session, transferring ownership of the socket
             std::thread{std::bind(
                 &do_session,
-                std::move(socket))}.detach();
+                std::move(socket), user_id)}.detach();
         }
     }
     catch (const std::exception& e)
