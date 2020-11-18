@@ -32,49 +32,51 @@ namespace websocket = boost::beast::websocket;  // from <boost/beast/websocket.h
 
 #define DEFAULT_USER_ID     10
 
-std::unordered_map<uint32_t, std::unique_ptr<CClient>> userPull;
+std::map<const uint32_t, const std::unique_ptr<CClient>> userPull;
 
 // Echoes back all received WebSocket messages
-void do_session(tcp::socket& socket, uint64_t clientId)
+void do_session(tcp::socket& socket, const uint32_t clientId)
 {
-    try
-    {
+    // try
+    // {
         // Construct the stream by moving in the socket
-        websocket::stream<tcp::socket> ws{std::move(socket)};
+        // websocket::stream<tcp::socket> ws{std::move(socket)};
+        userPull.emplace(std::pair(clientId, std::make_unique<CClient>(clientId, std::move(socket))));
 
         // Accept the websocket handshake
-        ws.accept();
-        std::cout << "New Client with ID #" << clientId << " accepted\n";
+        // ws.accept();
+        // std::cout << "New Client with ID #" << clientId << " accepted\n";
 
-        for(;;)
-        {
-            // This buffer will hold the incoming message
-            boost::beast::multi_buffer buffer;
+        // for(;;)
+        // {
+        //     // This buffer will hold the incoming message
+        //     boost::beast::multi_buffer buffer;
 
-            // Read a message
-            ws.read(buffer);
+        //     // Read a message
+        //     ws.read(buffer);
 
-            if(ws.got_text()) {
-                // Echo the message back
-                ws.text(ws.got_text());
-                std::string str = buffers_to_string(buffer.data()); 
-                std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+        //     if(ws.got_text()) {
+        //         // Echo the message back
+        //         ws.text(ws.got_text());
+        //         std::string str = buffers_to_string(buffer.data()); 
+        //         std::transform(str.begin(), str.end(), str.begin(), ::tolower);
                 
-                std::cout << "Client msg: \"" << str << "\"\n";
-                ws.write(boost::asio::buffer(str));
-            }
-        }
-    }
-    catch(boost::system::system_error const& se)
-    {
-        // This indicates that the session was closed
-        if(se.code() != websocket::error::closed)
-            std::cerr << "Error: " << se.code().message() << std::endl;
-    }
-    catch(std::exception const& e)
-    {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
+        //         std::cout << "Client msg: \"" << str << "\"\n";
+        //         ws.write(boost::asio::buffer(str));
+        //     }
+        // }
+    // }
+    // catch(boost::system::system_error const& se)
+    // {
+    //     // This indicates that the session was closed
+    //     if(se.code() != websocket::error::closed) {
+    //         std::cerr << "Error 1: " << se.code().message() << std::endl;
+    //     }
+    // }
+    // catch(std::exception const& e)
+    // {
+    //     std::cerr << "Error 2: " << e.what() << std::endl;
+    // }
 }
 
 /**
@@ -85,12 +87,15 @@ SWebSockServer::SWebSockServer(std::string s_port) {
 
     std::cout << "Object of SWebSockServer class created." << std::endl;
 
-    uint64_t user_id = DEFAULT_USER_ID;
+    uint32_t user_id = DEFAULT_USER_ID;
 
     try {
 
+        auto addr = "0.0.0.0";
         auto const address = boost::asio::ip::make_address("0.0.0.0");
         auto const port = static_cast<unsigned short>(std::atoi(s_port.c_str()));
+
+        std::cout << "Start listening " << addr << ":" << s_port << std::endl;
 
         // The io_context is required for all I/O
         boost::asio::io_context ioc{1};
@@ -105,12 +110,10 @@ SWebSockServer::SWebSockServer(std::string s_port) {
             // Block until we get a connection
             acceptor.accept(socket);
 
-            userPull.emplace(make_pair(user_id++, std::make_unique<CClient>()));
-
             // Launch the session, transferring ownership of the socket
             std::thread{std::bind(
                 &do_session,
-                std::move(socket), user_id)}.detach();
+                std::move(socket), user_id++)}.detach();
         }
     }
     catch (const std::exception& e)
