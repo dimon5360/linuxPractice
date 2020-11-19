@@ -56,6 +56,11 @@ public:
 #if UNIT_TEST_WEBSOCKET_SERVER
     void test_WebSocketServer();
 #endif /* UNIT_TEST_WEBSOCKET_SERVER */
+
+#if UNIT_TEST_JSON_HANDLER
+    void test_JsonHandler();
+#endif /* UNIT_TEST_JSON_HANDLER */
+
 };
 
 extern void StartUnitTesting(void);

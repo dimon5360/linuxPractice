@@ -80,6 +80,14 @@ UUnitTest::UUnitTest() {
             return;
         }
 #endif /* UNIT_TEST_WEBSOCKET_SERVER */
+
+#if UNIT_TEST_JSON_HANDLER
+        test_JsonHandler();
+        if(unitTestResult != err_type_ut::ERR_OK) {
+            PrintUnitTestErrorCode();
+            return;
+        }
+#endif /* UNIT_TEST_JSON_HANDLER */
 #if UNIT_TEST_DEBUG_INFO
         std::cout << "Unit testing result succed." << std::endl;
 #endif /* UNIT_TEST_DEBUG_INFO */
@@ -87,6 +95,14 @@ UUnitTest::UUnitTest() {
 }  
 
 /* start of unit testing  -------------------------------------------------- */
+
+
+#if UNIT_TEST_JSON_HANDLER
+#include "json/jjson_handler.hpp"
+void UUnitTest::test_JsonHandler() {
+    std::unique_ptr jsh = std::make_unique<JJsonHandler>();
+}
+#endif /* UNIT_TEST_JSON_HANDLER */
 
 //-----------------------------------------------------------------------------
 #if UNIT_TEST_DATA_PROCESSOR_QUEUE

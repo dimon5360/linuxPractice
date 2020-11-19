@@ -11,16 +11,15 @@
 #pragma once
 
 /* std C++ lib */
+#include <iostream>
 #include <string>
-
-using cliReq = struct ClientRequest  {
-    std::string request_type;
-    std::string request_data; 
-};
-
 
 class JJsonHandler {
 
+public:
+    JJsonHandler();
+    ~JJsonHandler() { std::cout << "JJsonHandler class removed." << std::endl; };
 
-
+private:
+    void PrintJson(const std::string &json);
 };
