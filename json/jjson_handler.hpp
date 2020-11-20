@@ -21,5 +21,7 @@ public:
     ~JJsonHandler() { std::cout << "JJsonHandler class removed." << std::endl; };
 
 private:
-    void PrintJson(const std::string &json);
+    void PrintJson(const std::string_view json);
+    
+
 };

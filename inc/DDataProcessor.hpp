@@ -11,6 +11,7 @@
 #pragma once
 
 /* local headers */
+#include "config.h"
 #include "SService.hpp"
 
 /* std C++ lib headers */
@@ -25,7 +26,6 @@ class DDataProcessor final :  SService {
 private:
 
     boost::mutex _mtx;
-    boost::thread _th;
 
     std::queue<std::string> inQueueRequest;
     std::queue<std::string> outQueueResponse;
@@ -35,7 +35,7 @@ private:
 
     /* private interfaces for work with queue ------------------------------ */
     /* Push the output data to queue */
-    void pushOutQueue(const std::string &) override;    
+    void pushOutQueue(const std::string &&) /* override */;    
     /* Get input data from queue */
     std::string pullInQueue(void) override;
     /* Check that input data queue is empty */
@@ -50,7 +50,7 @@ public:
 
     /* public interfaces for work with queue ------------------------------- */
     /* Push the input data to queue */
-    void pushInQueue(const std::string &) override;
+    void pushInQueue(const std::string &&) /* override */;
     /* Get output data from queue */
     std::string pullOutQueue(void) override;
     /* Check that output data queue is empty */

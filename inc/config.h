@@ -22,7 +22,7 @@
 #define UNIT_TEST_DATA_PROCESSOR_QUEUE  0
 #define UNIT_TEST_DATA_BASE_QUEUE       0
 #define UNIT_TEST_DATA_BASE_CONNECTION  0
-#define UNIT_TEST_WEBSOCKET_SERVER      0
+#define UNIT_TEST_WEBSOCKET_SERVER      1
 #define UNIT_TEST_JSON_HANDLER          1
 
 
@@ -36,6 +36,7 @@
 
 /* debug data processor logger --------------------------------------------- */
 #define DATA_PROC_DEBUG_INFO            1
+#define DATA_PROCESSOR_HANDLER_LOG      1
 
 /* debug data base processor logger ---------------------------------------- */
 #define DATA_BASE_DEBUG_INFO            1
@@ -47,4 +48,5 @@
 #define USE_TCP_SOCKET_SERVER           0
 #else 
 #define USE_TCP_SOCKET_SERVER           1
+
 #endif /* USE_WEB_SOCKET_SERVER */

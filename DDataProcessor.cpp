@@ -5,7 +5,7 @@
  *  @author Kalmykov Dmitry
  *
  *  @version 0.1
- *  @date 30.05.2020
+ *  @date 20.11.2020
  */
 
 /* local headers */
@@ -20,109 +20,123 @@
 /* Static private funtions declarations ------------------------------------ */
 
 /* Reverse string for test output of data */
-static void RevString(std::string &origString);
+static void RevString(std::string &&origString);
 
 
 /* Class methods implementaions -------------------------------------------- */
 
-/**
+/******************************************************************************
  * @brief SServer class constructor
  */
 DDataProcessor::DDataProcessor() {
-    /* start thread for main handler */
-    _th = boost::thread(boost::bind(&DDataProcessor::handle, this));
-    _th.detach();
+    /* start DataProcessor handler */
+    std::thread(std::bind(&DDataProcessor::handle, this)).detach();
 }
 
-/**
+/******************************************************************************
  * @brief SServer class destructor
  */
 DDataProcessor::~DDataProcessor() {
-    // TODO: also need to check, does queue need clear?
-    _th.~thread();
 }
 
-/*** 
+/******************************************************************************
  *  @brief  Main data processor class handler
  */
 void DDataProcessor::handle() {
     while(true) {
 
-        if(!isInQueueEmpty()) {
-            std::string req = pullInQueue();   
-            RevString(req);         
-            pushOutQueue(req);
+        if(std::string req = pullInQueue(); !req.empty()) { 
+
+#if DATA_PROCESSOR_HANDLER_LOG
+            std::cout << "Input request for Data Processor: " << req << std::endl;
+#endif /* DATA_PROCESSOR_HANDLER_LOG */
+
+            // TODO: replace this function to HTTP request handler
+            RevString(std::move(req));         
+            pushOutQueue(std::move(req));
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_TIMEOUT));
     }
 }
 
-/***
- *  @brief  Push the output data to queue
+/******************************************************************************
+ *  @brief  Push the output data to OUT queue for connection handler <CClient>
+ *  @param[in] Reference to string with output HTTP response
  */
-void DDataProcessor::pushOutQueue(const std::string & resp) {
+void DDataProcessor::pushOutQueue(const std::string && resp) {
     
     /* lock mutex for pushing data */
     try {
         boost::lock_guard<boost::mutex> lock(_mtx);
+
+#if DATA_PROCESSOR_HANDLER_LOG
+            std::cout << "Out response for Data Processor: " << resp << std::endl;
+#endif /* DATA_PROCESSOR_HANDLER_LOG */
+
+        outQueueResponse.push(std::move(resp));
     } catch(std::exception ex) {
         std::cout << ex.what() << std::endl;
     }
-    outQueueResponse.push(resp);
 }
 
-/***
- *  @brief  Push the input data to queue
+/******************************************************************************
+ *  @brief  Push the input data to IN queue for HTTP handler
+ *  @param[in] Reference to string with input HTTP request
  */
-void DDataProcessor::pushInQueue(const std::string & req) {
+void DDataProcessor::pushInQueue(const std::string && req) {
 
     /* lock mutex for pushing data */
     try {
         boost::lock_guard<boost::mutex> lock(_mtx);
+        inQueueRequest.push(std::move(req));
     } catch(std::exception ex) {
         std::cout << ex.what() << std::endl;
     }
-    inQueueRequest.push(req);
 }
 
-/***
- *  @brief  Get output data from queue
+/******************************************************************************
+ *  @brief  Pull the output data from OUT queue for connection handler
+ *  @param  None
+ *  @return If no exception - String with HTTP handler response
  */
 std::string DDataProcessor::pullOutQueue(void) {
 
+    std::string resp;
     /* lock mutex for pushing data */
     try {
         boost::lock_guard<boost::mutex> lock(_mtx);
-    } catch(std::exception ex) {
-        std::cout << ex.what() << std::endl;
-    }
-    std::string resp;
 
     if(!isOutQueueEmpty()) {
         resp = outQueueResponse.front();
         outQueueResponse.pop();
     }
+    } catch(std::exception ex) {
+        std::cout << ex.what() << std::endl;
+    }
     return resp;
 }
 
-/***
- *  @brief  Get input data from queue
+
+/******************************************************************************
+ *  @brief  Pull the input data from IN queue for HTTP handler
+ *  @param  None
+ *  @return If no exception - String with HTTP handler request
  */
 std::string DDataProcessor::pullInQueue(void) {
 
+    std::string req;
     /* lock mutex for pushing data */
     try {
         boost::lock_guard<boost::mutex> lock(_mtx);
+
+        if(!isInQueueEmpty()) {
+            req = inQueueRequest.front();
+            inQueueRequest.pop();
+        }
     } catch(std::exception ex) {
         std::cout << ex.what() << std::endl;
     }
 
-    std::string req;
-
-    if(!isInQueueEmpty()) {
-        req = inQueueRequest.front();
-        inQueueRequest.pop();
-    }
     return req;
 }
 
@@ -145,6 +159,6 @@ bool DDataProcessor::isOutQueueEmpty(void) {
 /*** 
  *  @brief  Reverse string for test output of data
  */
-static void RevString(std::string &origString) {
+static void RevString(std::string &&origString) {
     std::reverse(origString.begin(), origString.end());
 }

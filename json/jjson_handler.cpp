@@ -10,6 +10,7 @@
 
 /* user classes headers */
 #include "jjson_handler.hpp"
+#include "DDataProcessor.hpp"
 
 /* C++ boost lib headers */
 #include <boost/property_tree/ptree.hpp>
@@ -27,8 +28,8 @@ using cliReq = struct ClientRequest  {
 JJsonHandler::JJsonHandler() {
     std::cout << "JJsonHandler class created." << std::endl;
     
-    std::string auth_json_data = 
-        "{ \"email\" : \"test@test.com\", \"password\" : \"admin1234\" }";
+    std::string_view auth_json_data 
+        { "{ \"email\" : \"test@test.com\", \"password\" : \"admin1234\" }" };
 
     std::stringstream json_req;
     json_req << "POST https://api.test.org/api/auth/login\r\n"
@@ -42,28 +43,26 @@ JJsonHandler::JJsonHandler() {
 
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
+
+#include <string_view>
 /****************************************************
  *  @brief  Util to print Json strings
  */
-void JJsonHandler::PrintJson(const std::string &ss) {
+void JJsonHandler::PrintJson(const std::string_view ss) {
     namespace pt = boost::property_tree;
 
     try {
 
-        // std::stringstream ss;
-        // ss << json;
+        pt::ptree tree;
 
-        pt::ptree pt2;
-        // pt::read_json(ss, pt2);
-
-        boost::iostreams::array_source as(&ss[0], ss.size());
+        boost::iostreams::array_source as(ss.data(), ss.size());
         boost::iostreams::stream<boost::iostreams::array_source> is(as);
 
-        pt::read_json(is, pt2);
-        std::cout << "email : \"" << pt2.get<std::string>("email") << "\"\n";
-        std::cout << "password : \"" << pt2.get<std::string>("password") << "\"\n";
+        pt::read_json(is, tree);
+        std::cout << "email : \"" << tree.get<std::string>("email") << "\"\n";
+        std::cout << "password : \"" << tree.get<std::string>("password") << "\"\n";
         
-        std::cout << pt2.data() << std::endl;
+        std::cout << tree.data() << std::endl;
     }
     catch(std::exception const &e) {
         std::cout << "Exception caught: " << e.what() << std::endl;

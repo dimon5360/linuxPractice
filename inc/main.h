@@ -10,7 +10,7 @@
 #include <boost/format.hpp>
 #include <boost/bind/bind.hpp>
 
-/* application version v.0.0.20 from 18.11.2020 */
+/* application version v.0.0.20 from 20.11.2020 */
 #define MAJOR           0
 #define MINOR           0
 #define BUILD           20

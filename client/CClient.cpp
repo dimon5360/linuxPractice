@@ -8,14 +8,9 @@
  * @date 12.06.2020
  */
 
+/* C++ local headers */
 #include "CClient.hpp"
-
-
-#include "iostream"
-
-/* C++ boost lib headers */
-
-
+#include "DDataProcessor.hpp"
 
 using tcp = boost::asio::ip::tcp; 
 
@@ -30,7 +25,11 @@ CClient::CClient(const uint32_t &clientId, tcp::socket&&ws):
     ws(std::move(ws)) 
 {
 
-    WaitConnection();    
+    std::cout << "Object of CClient class created." << std::endl;
+    /* client data processor */
+    std::unique_ptr dataProc = std::make_unique<DDataProcessor>();
+    /* handle the connection */
+    handle(std::move(dataProc));    
 }
 
 /*************************************************************
@@ -39,7 +38,7 @@ CClient::CClient(const uint32_t &clientId, tcp::socket&&ws):
  *  @param[in]  req Input JSON request in string
  *  @return     Client request structure (alias cliReq)
  */
-static const std::string &PrepareResponse() noexcept  {
+const std::string &CClient::PrepareResponse() noexcept  {
 
     
 }
@@ -50,12 +49,16 @@ static const std::string &PrepareResponse() noexcept  {
  *  @param[in]  req Input JSON request in string
  *  @return     Client request structure (alias cliReq)
  */
-static const std::string &ProcessRequest(std::string && req) noexcept  {
+void CClient::ProcessRequest(std::string && req) noexcept  {
 
     
 }
 
-void CClient::WaitConnection() {
+/*************************************************************
+ *  @brief      Client connection handler
+ *  @param[in]  Reference to data processor class object
+ */
+void CClient::handle(std::unique_ptr<DDataProcessor> && dataProc) {
 
     try
     {
@@ -74,19 +77,20 @@ void CClient::WaitConnection() {
             if(ws.got_text()) {
                 
                 // Echo the message back
-                ws.text(ws.got_text());
+                // ws.text(ws.got_text());
                 std::string str = buffers_to_string(buffer.data()); 
-                std::cout << "Client msg: \"" << str << "\"\n";
+                std::cout << "Received a client msg: \"" << str << "\"\n";
+
+                dataProc->pushInQueue(std::move(str));
 
                 // TODO: prepare the response to client with its ID
                 std::transform(str.begin(), str.end(), str.begin(), ::tolower);    
 
 
-
-
-
+                std::cout << "Sent a client msg: \"" << str << "\"\n";
                 ws.write(boost::asio::buffer(str));
             }
+            buffer.clear();
         }
     }
     catch(boost::system::system_error const& se)
